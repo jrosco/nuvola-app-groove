@@ -37,36 +37,32 @@
 
     // Create new WebApp prototype
     var WebApp = Nuvola.$WebApp();
-    
-    
-    WebApp._onInitAppRunner = function(emitter)
-    {
-    	Nuvola.WebApp._onInitAppRunner.call(this, emitter);
 
-    	Nuvola.config.setDefault(AUTO_PLAY, false);
 
-    	Nuvola.core.connect("InitializationForm", this);
-    	Nuvola.core.connect("PreferencesForm", this);
+    WebApp._onInitAppRunner = function(emitter) {
+        Nuvola.WebApp._onInitAppRunner.call(this, emitter);
+
+        Nuvola.config.setDefault(AUTO_PLAY, false);
+
+        Nuvola.core.connect("InitializationForm", this);
+        Nuvola.core.connect("PreferencesForm", this);
     }
 
-    WebApp._onInitializationForm = function(emitter, values, entries)
-    {
-    	// If user name is not configured, request initialization form
-    	if (!Nuvola.config.hasKey(AUTO_PLAY))
-        	this.appendPreferences(values, entries);
+    WebApp._onInitializationForm = function(emitter, values, entries) {
+        // If user name is not configured, request initialization form
+        if (!Nuvola.config.hasKey(AUTO_PLAY))
+            this.appendPreferences(values, entries);
     }
 
-    WebApp._onPreferencesForm = function(emitter, values, entries)
-    {
-    	this.appendPreferences(values, entries);
+    WebApp._onPreferencesForm = function(emitter, values, entries) {
+        this.appendPreferences(values, entries);
     }
 
-    WebApp.appendPreferences = function(values, entries)
-    {
-    	values[AUTO_PLAY] = Nuvola.config.get(AUTO_PLAY);
-    	entries.push(["header", "Enable Autoplay"]);
-    	entries.push(["bool", AUTO_PLAY, "AutoPlay"]);
-     }
+    WebApp.appendPreferences = function(values, entries) {
+        values[AUTO_PLAY] = Nuvola.config.get(AUTO_PLAY);
+        entries.push(["header", "Enable Autoplay"]);
+        entries.push(["bool", AUTO_PLAY, "AutoPlay"]);
+    }
 
     // Initialization routines
     WebApp._onInitWebWorker = function(emitter) {
@@ -88,22 +84,18 @@
         this.isGroovePlayerReady();
     }
 
-    WebApp.isGroovePlayerReady = function() 
-    {
-        if (playerInterface.getCurrent())
-        {
+    WebApp.isGroovePlayerReady = function() {
+        if (playerInterface.getCurrent()) {
             console.log(Nuvola.format('Player is loaded ... '));
             this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
             this.clickPause = document.getElementsByClassName('iconPlayerPause');
             this.clickNext = document.getElementsByClassName('iconPlayerNext');
             this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
-            
-            Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click(): false;
-            
+
+            Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
+
             this.update();
-        }
-        else
-        { 
+        } else {
             setTimeout(this.isGroovePlayerReady.bind(this), 100);
         }
     }
@@ -111,14 +103,17 @@
     // Extract data from the web page
     WebApp.update = function() {
         try {
-            
-            var imgElement = document.getElementsByClassName('playerNowPlayingImg')[1].getElementsByTagName('img')[1];
+
+            var imgElement =
+                document.getElementsByClassName('playerNowPlayingImg')[1].getElementsByTagName('img')[1];
             this.artistImg = imgElement.getAttribute('src');
 
-            var artistElement = document.getElementsByClassName('playerNowPlayingMetadata')[1].getElementsByTagName('a')[1];
+            var artistElement =
+                document.getElementsByClassName('playerNowPlayingMetadata')[1].getElementsByTagName('a')[1];
             this.artisTitle = artistElement.getAttribute('title');
 
-            var songElement = document.getElementsByClassName('playerNowPlayingMetadata')[1].getElementsByTagName('a')[0];
+            var songElement =
+                document.getElementsByClassName('playerNowPlayingMetadata')[1].getElementsByTagName('a')[0];
             this.songTitle = songElement.getAttribute('title');
 
             // TODO : Find a way to get artist ablum info
@@ -142,7 +137,8 @@
         var nextEnabled = (this.clickNext.length == 1) ? true : false;
         var previousEnabled = (this.clickPrevious.length == 1) ? true : false;
 
-        this.state = playEnabled ? PlaybackState.PAUSED : (pauseEnabled ? PlaybackState.PLAYING : PlaybackState.UNKNOWN);
+        this.state = playEnabled ? PlaybackState.PAUSED :
+            (pauseEnabled ? PlaybackState.PLAYING : PlaybackState.UNKNOWN);
 
         player.setPlaybackState(this.state);
 
@@ -167,8 +163,8 @@
                     this.clickPause.item('click').click();
                     break;
                 case PlayerAction.TOGGLE_PLAY:
-                    (this.state == PlaybackState.PLAYING) ? this.clickPause.item('click').click(): 
-                    	this.clickPlay.item('click').click();
+                    (this.state == PlaybackState.PLAYING) ? this.clickPause.item('click').click():
+                        this.clickPlay.item('click').click();
                     break;
                 case PlayerAction.PREV_SONG:
                     this.clickPrevious.item('click').click();
