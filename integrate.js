@@ -23,10 +23,14 @@
  */
 "use strict";
 
-(function(Nuvola) {
+(function(Nuvola)
+{
 
     // Autoplay Setting
     var AUTO_PLAY = "app.autoplay";
+    // For some reason the web player is set to 50% at startup
+    // This setting will override
+    var MAX_VOLUME = "app.max_volume";
 
     // Create media player component
     var player = Nuvola.$object(Nuvola.MediaPlayer);
@@ -39,7 +43,8 @@
     var WebApp = Nuvola.$WebApp();
 
 
-    WebApp._onInitAppRunner = function(emitter) {
+    WebApp._onInitAppRunner = function(emitter)
+    {
         Nuvola.WebApp._onInitAppRunner.call(this, emitter);
 
         Nuvola.config.setDefault(AUTO_PLAY, false);
@@ -48,24 +53,31 @@
         Nuvola.core.connect("PreferencesForm", this);
     }
 
-    WebApp._onInitializationForm = function(emitter, values, entries) {
-        // If user name is not configured, request initialization form
-        if (!Nuvola.config.hasKey(AUTO_PLAY))
-            this.appendPreferences(values, entries);
+    WebApp._onInitializationForm = function(emitter, values, entries)
+    {
+        return;
     }
 
-    WebApp._onPreferencesForm = function(emitter, values, entries) {
+
+    WebApp._onPreferencesForm = function(emitter, values, entries)
+    {
         this.appendPreferences(values, entries);
     }
 
-    WebApp.appendPreferences = function(values, entries) {
+    WebApp.appendPreferences = function(values, entries)
+    {
         values[AUTO_PLAY] = Nuvola.config.get(AUTO_PLAY);
-        entries.push(["header", "Enable Autoplay"]);
+        entries.push(["header", "Enable autoplay songs on startup"]);
         entries.push(["bool", AUTO_PLAY, "AutoPlay"]);
+        
+        values[MAX_VOLUME] = Nuvola.config.get(MAX_VOLUME);
+        entries.push(["header", "Set to max volume on startup"]);
+        entries.push(["bool", MAX_VOLUME, "Max Volume"]);
     }
 
     // Initialization routines
-    WebApp._onInitWebWorker = function(emitter) {
+    WebApp._onInitWebWorker = function(emitter)
+    {
         Nuvola.WebApp._onInitWebWorker.call(this, emitter);
 
         var state = document.readyState;
@@ -76,7 +88,8 @@
     }
 
     // Page is ready for magic
-    WebApp._onPageReady = function() {
+    WebApp._onPageReady = function()
+    {
         // Connect handler for signal ActionActivated
         Nuvola.actions.connect("ActionActivated", this);
 
@@ -84,25 +97,34 @@
         this.isGroovePlayerReady();
     }
 
-    WebApp.isGroovePlayerReady = function() {
-        if (playerInterface.getCurrent()) {
+    WebApp.isGroovePlayerReady = function()
+    {
+        if (playerInterface.getCurrent())
+        {
             console.log(Nuvola.format('Player is loaded ... '));
             this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
             this.clickPause = document.getElementsByClassName('iconPlayerPause');
             this.clickNext = document.getElementsByClassName('iconPlayerNext');
             this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
+            var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
 
             Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
+            Nuvola.config.get(MAX_VOLUME) ? maxVolume.item(onclick).click() : false;
+            
 
             this.update();
-        } else {
+        }
+        else
+        {
             setTimeout(this.isGroovePlayerReady.bind(this), 100);
         }
     }
 
     // Extract data from the web page
-    WebApp.update = function() {
-        try {
+    WebApp.update = function()
+    {
+        try
+        {
 
             var imgElement =
                 document.getElementsByClassName('playerNowPlayingImg')[1].getElementsByTagName('img')[1];
@@ -119,7 +141,9 @@
             // TODO : Find a way to get artist ablum info
             //var albumElement = document.getElementsByClassName('headerMetadata')[0].getElementsByTagName('span')[0];
             //this.albumTitle = albumElement.getAttribute('title');
-        } catch (e) {
+        }
+        catch (e)
+        {
             console.log(Nuvola.format('{1}', e));
         }
 
@@ -152,10 +176,13 @@
     }
 
     // Handler of playback actions
-    WebApp._onActionActivated = function(emitter, name, param) {
+    WebApp._onActionActivated = function(emitter, name, param)
+    {
 
-        try {
-            switch (name) {
+        try
+        {
+            switch (name)
+            {
                 case PlayerAction.PLAY:
                     this.clickPlay.item('click').click();
                     break;
@@ -178,11 +205,13 @@
                         'message': 'Not supported.'
                     };
             }
-        } catch (e) {
+        }
+        catch (e)
+        {
             console.log(Nuvola.format('{1}'), e);
         }
     }
 
-WebApp.start();
+    WebApp.start();
 
 })(this); // function(Nuvola)
