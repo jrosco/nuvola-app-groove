@@ -139,7 +139,7 @@
         }
 
         player.setTrack(track);
-2
+
         var playEnabled = (this.clickPlay.length == 1) ? true : false;
         var pauseEnabled = (this.clickPause.length == 1) ? true : false;
         var nextEnabled = (this.clickNext.length == 1) ? true : false;
