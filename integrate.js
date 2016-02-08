@@ -28,9 +28,6 @@
 
     // Autoplay Setting
     var AUTO_PLAY = "app.autoplay";
-    // For some reason the web player is set to 50% at startup
-    // This setting will override
-    var MAX_VOLUME = "app.max_volume";
 
     // Create media player component
     var player = Nuvola.$object(Nuvola.MediaPlayer);
@@ -49,15 +46,9 @@
 
         Nuvola.config.setDefault(AUTO_PLAY, false);
 
-        Nuvola.core.connect("InitializationForm", this);
         Nuvola.core.connect("PreferencesForm", this);
-    }
 
-    WebApp._onInitializationForm = function(emitter, values, entries)
-    {
-        return;
     }
-
 
     WebApp._onPreferencesForm = function(emitter, values, entries)
     {
@@ -67,12 +58,10 @@
     WebApp.appendPreferences = function(values, entries)
     {
         values[AUTO_PLAY] = Nuvola.config.get(AUTO_PLAY);
-        entries.push(["header", "Enable autoplay songs on startup"]);
-        entries.push(["bool", AUTO_PLAY, "AutoPlay"]);
         
-        values[MAX_VOLUME] = Nuvola.config.get(MAX_VOLUME);
-        entries.push(["header", "Set to max volume on startup"]);
-        entries.push(["bool", MAX_VOLUME, "Max Volume"]);
+        var _ = Nuvola.Translate.gettext;
+        entries.push(["header", _("Groove Settings")]);
+        entries.push(["bool", AUTO_PLAY, _("Enable autoplay songs on start-up")]);
     }
 
     // Initialization routines
@@ -101,7 +90,7 @@
     {
         if (playerInterface.getCurrent())
         {
-            console.log(Nuvola.format('Player is loaded ... '));
+            console.log(Nuvola.format('Groove Player [loaded]'));
             this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
             this.clickPause = document.getElementsByClassName('iconPlayerPause');
             this.clickNext = document.getElementsByClassName('iconPlayerNext');
@@ -109,9 +98,7 @@
             var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
 
             Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
-            Nuvola.config.get(MAX_VOLUME) ? maxVolume.item(onclick).click() : false;
             
-
             this.update();
         }
         else
@@ -138,24 +125,21 @@
                 document.getElementsByClassName('playerNowPlayingMetadata')[1].getElementsByTagName('a')[0];
             this.songTitle = songElement.getAttribute('title');
 
-            // TODO : Find a way to get artist ablum info
-            //var albumElement = document.getElementsByClassName('headerMetadata')[0].getElementsByTagName('span')[0];
-            //this.albumTitle = albumElement.getAttribute('title');
         }
         catch (e)
         {
-            console.log(Nuvola.format('{1}', e));
+            console.log(Nuvola.format('Error getting song info : {1}'), e);
         }
 
         var track = {
             title: this.songTitle,
             artist: this.artisTitle,
-            album: this.albumTitle,
+            album: null, //TODO : Find a way to get artist ablum info. jrosco/nuvola-app-groove/#2
             artLocation: this.artistImg
         }
 
         player.setTrack(track);
-
+2
         var playEnabled = (this.clickPlay.length == 1) ? true : false;
         var pauseEnabled = (this.clickPause.length == 1) ? true : false;
         var nextEnabled = (this.clickNext.length == 1) ? true : false;
@@ -208,7 +192,7 @@
         }
         catch (e)
         {
-            console.log(Nuvola.format('{1}'), e);
+            console.log(Nuvola.format('Play back error : {1}'), e);
         }
     }
 
