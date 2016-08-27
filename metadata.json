@@ -9,5 +9,6 @@
     "api_minor": 0,
     "categories": "AudioVideo;Audio;",
     "requirements": "FlashAudioRequired",
-    "home_url": "https://music.microsoft.com/collection?target=web"
+    "home_url": "https://music.microsoft.com/collection?target=web",
+    "license": "2-Clause BSD"
 }
