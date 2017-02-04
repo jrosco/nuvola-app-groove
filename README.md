@@ -1,4 +1,4 @@
-Microsoft Groove Nuvola Player App
+Microsoft Groove (Nuvola app)
 =============================
 
 Integration of Microsoft Groove into your linux desktop via
@@ -9,28 +9,15 @@ Support
 
 Report bugs and issues at <https://github.com/tiliado/nuvola-app-groove/issues>.
 
-
 Installation
 ------------
 
-  * Execute ``make help`` to get help.
-  * Execute ``make build`` to build graphics.
-  * Execute ``make install`` to install files to user's local directory.
-  * Don't execute ``make uninstall``. Why would you do that?
-
+This project uses [Nuvola SDK](https://github.com/tiliado/nuvolasdk#create-new-project). Please refer to
+the [Build a Project Using Nuvola SDK](https://github.com/tiliado/nuvolasdk#build-a-project-using-nuvola-sdk)
+page in order to obtain information about dependencies and installation instructions.
 
 Copyright
 ---------
 
-  - `Makefile`
-    + Copyright 2014-2015 Jiří Janoušek <janousek.jiri@gmail.com>
-    + License: [2-Clause BSD-license](./LICENSE-BSD.txt)
-
- - Files *.sh 
-    + Copyright 2016 Patrick Burroughs (Celti) <celti@celti.name>
-    + Copyright 2016 Jiří Janoušek <janousek.jiri@gmail.com>
-    + License: [2-Clause BSD-license](./LICENSE)
-    
-  - Other files:
-    + Copyright 2015 Joel Cumberland <joel_c@zoho.com>
-    + License: [2-Clause BSD-license](./LICENSE-BSD.txt)
+  - Copyright 2015 Joel Cumberland <joel_c@zoho.com>
+  - License: [2-Clause BSD-license](./LICENSE-BSD.txt)
