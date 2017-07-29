@@ -88,7 +88,7 @@
 
     WebApp.isGroovePlayerReady = function()
     {
-        if (playerInterface.getCurrent())
+        if (window.playerInterface && playerInterface.getCurrent())
         {
             console.log(Nuvola.format('Groove Player [loaded]'));
             this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
