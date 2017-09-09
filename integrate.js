@@ -90,14 +90,14 @@
     {
         try {
 
-          	console.log(Nuvola.format('Groove Player Controls [loaded]'));
-          	this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
-          	this.clickPause = document.getElementsByClassName('iconPlayerPause');
-          	this.clickNext = document.getElementsByClassName('iconPlayerNext');
-          	this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
-          	var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
+            console.log(Nuvola.format('Groove Player Controls [loaded]'));
+            this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
+            this.clickPause = document.getElementsByClassName('iconPlayerPause');
+            this.clickNext = document.getElementsByClassName('iconPlayerNext');
+            this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
+            var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
 
-          	Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
+            Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
 
             // Schedule the next update
             setTimeout(this.update.bind(this), 500);
