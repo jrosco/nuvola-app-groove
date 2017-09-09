@@ -2,14 +2,14 @@
  * Copyright 2015 Joel Cumberland <joel_c@zoho.com>
  *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met: 
- * 
+ * modification, are permitted provided that the following conditions are met:
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer. 
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution. 
- * 
+ *    and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -58,7 +58,7 @@
     WebApp.appendPreferences = function(values, entries)
     {
         values[AUTO_PLAY] = Nuvola.config.get(AUTO_PLAY);
-        
+
         var _ = Nuvola.Translate.gettext;
         entries.push(["header", _("Groove Settings")]);
         entries.push(["bool", AUTO_PLAY, _("Enable autoplay songs on start-up")]);
@@ -83,27 +83,29 @@
         Nuvola.actions.connect("ActionActivated", this);
 
         // Wait for groove player to load
-        this.isGroovePlayerReady();
+        this.loadPlayerControls();
     }
 
-    WebApp.isGroovePlayerReady = function()
+    WebApp.loadPlayerControls = function()
     {
-        if (window.playerInterface && playerInterface.getCurrent())
-        {
-            console.log(Nuvola.format('Groove Player [loaded]'));
-            this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
-            this.clickPause = document.getElementsByClassName('iconPlayerPause');
-            this.clickNext = document.getElementsByClassName('iconPlayerNext');
-            this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
-            var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
+        try {
 
-            Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
-            
-            this.update();
+          	console.log(Nuvola.format('Groove Player Controls [loaded]'));
+          	this.clickPlay = document.getElementsByClassName('iconPlayerPlay');
+          	this.clickPause = document.getElementsByClassName('iconPlayerPause');
+          	this.clickNext = document.getElementsByClassName('iconPlayerNext');
+          	this.clickPrevious = document.getElementsByClassName('iconPlayerPrevious');
+          	var maxVolume = document.getElementsByClassName('sliderButton iconPlayerSecondaryTrackCursor');
+
+          	Nuvola.config.get(AUTO_PLAY) ? this.clickPlay.item('click').click() : false;
+
+            // Schedule the next update
+            setTimeout(this.update.bind(this), 500);
+
         }
-        else
+        catch (e)
         {
-            setTimeout(this.isGroovePlayerReady.bind(this), 100);
+            console.log(Nuvola.format('Error loading player controls : {1}'), e);
         }
     }
 
