@@ -5,12 +5,12 @@
     "maintainer_link": "https://github.com/jrosco", 
     "version_major": 1, 
     "version_minor": 3, 
-    "api_major": 3, 
-    "api_minor": 0, 
     "categories": "AudioVideo;Audio;", 
-    "requirements": "FlashAudioRequired", 
     "home_url": "https://music.microsoft.com/collection?target=web", 
     "license": "2-Clause BSD", 
+    "api_major": 4,
+    "api_minor": 6,
+    "requirements": "Feature[MSE] codec[MP3]",
     "build": {
         "icons": [
             "src/icon.svg SCALABLE 64 128 256", 
