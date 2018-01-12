@@ -1,3 +1,8 @@
+RIP 2017
+========
+
+Microsoft Groove was discontinued at the end of 2017. This script is archived.
+
 Microsoft Groove (Nuvola app)
 =============================
 
